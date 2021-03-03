@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% block title %}
+    Рецепты
+{% endblock %}
+{% load static %}
+{% block css %}
+    <link rel="stylesheet" href="{% static 'pages/index.css' %}">
+{% endblock %}
+{% block content %}
+    {% csrf_token %}
+    <div class="author-subscribe" data-author="{{ title.id }}">
+        <p style="padding: 0 0 2em 0;">
+            {% if request.user.is_authenticated  %}
+            <button class="button button_style_light-blue button_size_subscribe" name="subscribe" data-out>
+            Подписаться на автора
+            </button>
+            {% endif %}
+        </p>
+    </div>
+    <div class="card-list">
+        {% for recipe in page %}
+            {% include 'recipe/recipe_item.html' %}
+        {% endfor %}
+    </div>
+{% endblock %}
+{% block js %}
+    <script src="{% static 'js/components/MainCards.js' %}"></script>
+    <script src="{% static 'js/components/Purchases.js' %}"></script>
+    <script src="{% static 'js/components/Favorites.js' %}"></script>
+    <script src="{% static 'js/components/Subscribe.js' %}"></script>
+    <script src="{% static 'js/config/config.js' %}"></script>
+    <script src="{% static 'js/components/AuthorRecipe.js' %}"></script>
+    <script src="{% static 'js/components/Header.js' %}"></script>
+    <script src="{% static 'js/api/Api.js' %}"></script>
+    <script src="{% static 'js/authorRecipe.js' %}"></script>
+{% endblock %}

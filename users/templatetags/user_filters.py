@@ -1,0 +1,78 @@
+from django import template
+
+
+from api.models import Follow, Favorites_recipe, Cart
+from recipe.models import Tag
+
+register = template.Library()
+
+
+@register.filter
+def addclass(field, css):
+    return field.as_widget(attrs={"class": css})
+
+
+@register.filter
+def is_subscribe(value, user):
+    """
+    Фильтрует запросы связанные,
+    с добавление объекта подписки.
+    """
+    return Follow.objects.filter(
+        author=value,
+        user=user
+    ).exists()
+
+
+@register.filter
+def is_favorite(value, user):
+    """
+    Фильтрует запросы связанные,
+    с добавление объекта в избранное.
+    """
+    return Favorites_recipe.objects.filter(
+        recipe=value,
+        user=user
+    ).exists()
+
+
+@register.filter
+def is_purchase(request, recipe):
+    """
+    Фильтровать набор запросов,
+    c добавление объекта в список покупок.
+    """
+    return Cart.objects.filter(
+        user=request.user,
+        recipe=recipe
+    )
+
+
+@register.filter
+def all_tags(value):
+    return Tag.objects.all()
+
+
+@register.filter
+def get_active_tags(value):
+    return value.getlist('tag')
+
+
+@register.filter
+def change_tag_link(request, tag):
+    copy = request.GET.copy()
+    if copy.getlist('page'):
+        copy.pop('page')
+    tag_link = copy.getlist('tag')
+    if tag.slug in tag_link:
+        tag_link.remove(tag.slug)
+        copy.setlist('tag', tag_link)
+    else:
+        copy.appendlist('tag', tag.slug)
+    return copy.urlencode()
+
+
+@register.filter
+def get_count_cart(request):
+    if request.user.is_authenticated:
+        return Cart.objects.filter(user=request.user).count()

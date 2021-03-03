@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <title>
+    {% block title %} {% endblock %}
+    </title>
+    {% block css %} {% endblock %}
+
+  </head>
+  <body class="body">
+    <header class="header">
+      {% include 'include/nav.html' %}
+    </header>
+    <main class="main container">
+      <div class="main__header">
+        <h1 class="main__title">
+        {{title}}
+      </h1>
+        {% if tags %}
+        {% include 'include/filter_tags.html' %}
+        {% endif %}
+      </div>
+      {% block content %}{% endblock %}
+      {% if page.has_other_pages %}
+        {% include "include/paginator.html" with items=page paginator=paginator%}
+      {% endif %}
+    </main>
+    {% include 'include/footer.html' %}
+    {% block js %} {% endblock %}
+  </body>
+</html>

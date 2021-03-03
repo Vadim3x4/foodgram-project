@@ -1,0 +1,104 @@
+from django.db import models
+from django.contrib.auth import get_user_model
+
+
+User = get_user_model()
+
+
+class Ingredient(models.Model):
+    title = models.CharField(
+        max_length=200,
+        db_index=True,
+        verbose_name='Название ингредиента'
+    )
+    dimension = models.CharField(
+        max_length=20,
+        verbose_name='Единица измерения'
+    )
+
+    class Meta:
+        verbose_name = "Ингредиент"
+        verbose_name_plural = "Ингредиенты"
+
+    def __str__(self):
+        return f'{self.title} ({self.dimension})'
+
+
+class RecipeIngredient(models.Model):
+    recipe = models.ForeignKey(
+        Recipe,
+        on_delete=models.CASCADE,
+        verbose_name='Название рецепта'
+    )
+    ingredient = models.ForeignKey(
+        Ingredient,
+        on_delete=models.CASCADE,
+        verbose_name='Название ингредиента'
+    )
+    quantity = models.PositiveIntegerField(
+        verbose_name='Колличество ингредиентов'
+    )
+
+    class Meta:
+        verbose_name_plural = "Ингредиенты для рецепта"
+
+    def __str__(self):
+        return f'{self.ingredient} - {self.quantity}'
+
+
+class Recipe(models.Model):
+    title = models.CharField(
+        max_length=255,
+        unique=True,
+        verbose_name='Название рецепта'
+    )
+    ingredients = models.ManyToManyField(
+        Ingredient,
+        blank=False,
+        through='RecipeIngredient',
+        related_name='recipes',
+        verbose_name='Ингредиенты'
+    )
+    time = models.PositiveIntegerField(
+        verbose_name='Время приготовления'
+    )
+    text = models.TextField(
+        null=False,
+        blank=False,
+        verbose_name='Описание рецепта'
+    )
+    pub_date = models.DateTimeField(
+        auto_now_add=True,
+        verbose_name='Дата публикации'
+    )
+    author = models.ForeignKey(
+        User, on_delete=models.CASCADE,
+        verbose_name='Автор',
+        null=True
+    )
+    image = models.ImageField(
+        upload_to='recipe/',
+        null=True,
+        blank=True
+    )
+    breakfast = models.BooleanField(
+        default=False,
+        verbose_name='Завтрак'
+    )
+    lunch = models.BooleanField(
+        default=False,
+        verbose_name='Обед'
+    )
+    dinner = models.BooleanField(
+        default=False,
+        verbose_name='Ужин'
+    )
+
+    class Meta:
+        verbose_name = 'Рецепт'
+        verbose_name_plural = 'Рецепты'
+        ordering = ("-pub_date",)
+
+    def __str__(self):
+        return self.title
+

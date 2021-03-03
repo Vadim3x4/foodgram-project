@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block title %}
+Избранные рецепты
+{% endblock %}
+{% load static %}
+{% block css %}
+	<link rel="stylesheet" href="{% static 'pages/index.css' %}" />
+{% endblock %}
+
+
+{% block content %}
+{% csrf_token %}
+	<div class="card-list">
+		{% for recipe in page %}
+			{% include 'recipe/recipe_item.html' %}
+		{% endfor %}
+	</div>
+{% endblock %}
+
+
+
+{% block js %}
+    <script src="{% static 'js/components/MainCards.js' %}"></script>
+    <script src="{% static 'js/components/Purchases.js' %}"></script>
+    <script src="{% static 'js/components/Favorites.js' %}"></script>
+    <script src="{% static 'js/config/config.js' %}"></script>
+    <script src="{% static 'js/components/CardList.js' %}"></script>
+    <script src="{% static 'js/components/Header.js' %}"></script>
+    <script src="{% static 'js/api/Api.js' %}"></script>
+    <script src="{% static 'js/favorite.js' %}"></script>
+{% endblock %}

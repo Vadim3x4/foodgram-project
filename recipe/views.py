@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.shortcuts import redirect
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import (
@@ -5,12 +6,13 @@ from django.shortcuts import (
     get_object_or_404
 )
 
-
 from .forms import RecipeForm
-from api.models import Favorites_recipe
+from api.models import FavoritesRecipe
 from .models import (
     User,
-    Recipe
+    Recipe,
+    Ingredient,
+    RecipeIngredient
 )
 from .utils import (
     pagination,
@@ -29,7 +31,7 @@ def index(request):
     paginator, page = pagination(
         request,
         recipe_list,
-        5
+        settings.RECIPES_ON_PAGE
     )
     return render(
         request,
@@ -69,14 +71,14 @@ def recipe_favorites(request):
     """
 
     tags = request.GET.getlist('tag')
-    favorite_list = Favorites_recipe.objects.favorite_recipe(
+    favorite_list = FavoritesRecipe.objects.favorite_recipe(
         request.user,
         tags
     )
     paginator, page = pagination(
         request,
         favorite_list,
-        3
+        settings.RECIPES_ON_FAVORITE
     )
     return render(
         request,
@@ -108,15 +110,21 @@ def recipe_author(request, author_id):
     paginator, page = pagination(
         request,
         author_recipes,
-        3
+        settings.RECIPES_ON_FAVORITE
     )
+
+    username = author
+    name, surname = author.first_name, author.last_name
+    if name or surname:
+        username = username.get_full_name
+        
     return render(
         request,
         "recipe/author_recipes.html",
         {
             'page': page,
             'paginator': paginator,
-            'title': author,
+            'title': username,
             'tags': True
         }
     )
@@ -150,7 +158,6 @@ def recipe_add(request):
         request.POST or None,
         files=request.FILES or None
     )
-    print(form)
     context = {'form': form}
     if request.method != 'POST':
         return render(
@@ -263,7 +270,7 @@ def my_follow(request):
     paginator, page = pagination(
         request,
         author_list,
-        3
+        settings.RECIPES_ON_FAVORITE
     )
     return render(
         request,

@@ -11,6 +11,7 @@ DEBUG = True
 ALLOWED_HOSTS = [
     "localhost",
     "127.0.0.1",
+    "testserver",
     ]
 
 
@@ -131,3 +132,6 @@ STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, "static")
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+RECIPES_ON_PAGE = 6
+RECIPES_ON_FAVORITE = 3

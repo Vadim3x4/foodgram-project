@@ -1,7 +1,7 @@
 from django import template
 
 
-from api.models import Follow, Favorites_recipe, Cart
+from api.models import Follow, FavoritesRecipe, Cart
 from recipe.models import Tag
 
 register = template.Library()
@@ -30,7 +30,7 @@ def is_favorite(value, user):
     Фильтрует запросы связанные,
     с добавление объекта в избранное.
     """
-    return Favorites_recipe.objects.filter(
+    return FavoritesRecipe.objects.filter(
         recipe=value,
         user=user
     ).exists()
@@ -76,3 +76,4 @@ def change_tag_link(request, tag):
 def get_count_cart(request):
     if request.user.is_authenticated:
         return Cart.objects.filter(user=request.user).count()
+

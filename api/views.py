@@ -1,5 +1,6 @@
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from django.http import (
@@ -9,7 +10,7 @@ from django.http import (
 
 
 from .models import (
-    Favorites_recipe,
+    FavoritesRecipe,
     Follow,
     Cart
 )
@@ -20,7 +21,7 @@ from recipe.models import (
 )
 
 
-class FavoriteView(APIView):
+class FavoriteView(LoginRequiredMixin, APIView):
     """
     Класс осуществляющий работу избранных рецептов.
     POST запросы отвечают за добавление рецепта.
@@ -32,31 +33,27 @@ class FavoriteView(APIView):
             Recipe,
             id=request.data.get('id')
         )
-        favorite_obj = Favorites_recipe.objects.get_or_create(
+        favorite_obj = FavoritesRecipe.objects.get_or_create(
             user=request.user,
             recipe=recipe
         )
         if favorite_obj:
-            return Response({'status': '201'})
-        return Response({"status": '302'})
+            return JsonResponse({'status': '201'})
+        return JsonResponse({"status": '302'})
 
     def delete(self, request, pk):
-        recipe = get_object_or_404(
-            Recipe,
-            id=pk
-        )
         favorite_obj = get_object_or_404(
-            Favorites_recipe,
+            FavoritesRecipe,
             user=request.user,
-            recipe=recipe
+            recipe_id=pk
         )
         favorite_obj.delete()
-        return Response(
+        return JsonResponse(
             {"status": '204'}
         )
 
 
-class FollowView(APIView):
+class FollowView(LoginRequiredMixin, APIView):
     """
     Класс осуществляющий работу подписок на авторов.
     POST запросы отвечают за добавление автора.
@@ -73,25 +70,21 @@ class FollowView(APIView):
             author=following
         )
         if follow_obj:
-            return Response(
+            return JsonResponse(
                 {'status': '201'}
             )
-        return Response(
+        return JsonResponse(
             {"status": '302'}
         )
 
     def delete(self, request, pk):
-        following = get_object_or_404(
-            User,
-            id=pk
-        )
         subscribe = get_object_or_404(
             Follow,
             user=request.user,
-            author=following
+            author_id=pk
         )
         subscribe.delete()
-        return Response(
+        return JsonResponse(
             {"status": '204'}
         )
 
@@ -113,21 +106,17 @@ class PurchaseView(APIView):
             recipe=recipe
         )
         if cart_object:
-            return Response({'status': '201'})
-        return Response({"status": '302'})
+            return JsonResponse({'status': '201'})
+        return JsonResponse({"status": '302'})
 
     def delete(self, request, pk):
-        recipe = get_object_or_404(
-            Recipe,
-            id=pk
-        )
         purchase = get_object_or_404(
             Cart,
             user=request.user,
-            recipe=recipe
+            recipe_id=pk
         )
         purchase.delete()
-        return Response(
+        return JsonResponse(
             {"status": '204'}
         )
 

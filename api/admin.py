@@ -1,9 +1,9 @@
 from django.contrib import admin
 
-from .models import Favorites_recipe, Follow, Cart
+from .models import FavoritesRecipe, Follow, Cart
 
 
-@admin.register(Favorites_recipe)
+@admin.register(FavoritesRecipe)
 class FavoriteAdmin(admin.ModelAdmin):
     list_display = (
         'id',

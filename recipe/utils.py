@@ -1,10 +1,10 @@
 from django.core.paginator import Paginator
 from django.http import HttpResponse
 from django.shortcuts import render
-
-from collections import Counter
+from django.db.models import Sum
 
 from .models import *
+from api.models import Cart
 
 
 def pagination(request, data, count_item):
@@ -43,36 +43,25 @@ def get_cart(request):
     в формате .txt .
     """
 
-    cart_list = Recipe.objects.filter(
-        Cart__user=request.user
-    ).all()
-
-    ingredients = RecipeIngredient.objects.filter(
-        recipe__in=cart_list
+    cart = Cart.objects.filter(user=request.user)
+    ingredients = cart.values(
+        'recipe__ingredients__title',
+        'recipe__ingredients__dimension'
+    ).annotate(
+        total_quantity=Sum(
+            'recipe__recipeingredient__quantity'
+        )
     )
 
-    ingredient_list = [
-        {i.ingredient: i.quantity} for i in ingredients
-    ]
+    content = ""
+    for ingredient in ingredients:
+        item = (f'{ingredient["recipe__ingredients__title"]} '
+                f'{ingredient["total_quantity"]} '
+                f'{ingredient["recipe__ingredients__dimension"]}')
+        content += item + '\n'
 
-    ingredient_sum = Counter()
-    for item in ingredient_list:
-        ingredient_sum.update(item)
-
-    finish = [
-        (str(i) + " - " + str(k) + '\n')
-        for (i, k) in ingredient_sum.items()
-    ]
-
-    filename = "recipe_list"
-    content = " ".join(finish)
-    response = HttpResponse(
-        content,
-        content_type='text/plain'
-    )
-
-    response['Content-Disposition'] = 'attachment; filename={0}'.format(
-        filename)
+    response = HttpResponse(content, content_type='text/plain')
+    response['Content-Disposition'] = 'attachment; filename=recipe_list'
     return response
 
 

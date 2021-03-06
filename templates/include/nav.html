@@ -1,39 +1,50 @@
 <!DOCTYPE html>
 {% load user_filters %}
+{% with current_url=request.resolver_match.url_name %}
 <nav class="nav">
 	<div class="nav__container container">
 		{% if user.is_authenticated %}
 			<ul class="nav__items list">
-				<li class="nav__item nav__item_active">
-					<a href="/" class="nav__link link">
+				<li class="nav__item {% if 'index' in current_url %}nav__item_active{% endif %}">
+					<a href="{% url 'index' %}" class="nav__link link">
 						Рецепты
 					</a>
 				</li>
-				<li class="nav__item">
+				<li class="nav__item {% if 'my_follow' in current_url %}nav__item_active{% endif %}">
 					<a href="{% url 'my_follow' %}" class="nav__link link">
 						Мои подписки
 					</a>
 				</li>
-				<li class="nav__item">
+				<li class="nav__item {% if 'recipe_add' in current_url %}nav__item_active{% endif %}">
 					<a href="{% url 'recipe_add' %}" class="nav__link link">
 						Создать рецепт
 					</a>
 				</li>
-				<li class="nav__item">
-					<a href="{% url 'favorites' %}" class="nav__link link">Избранное
+				<li class="nav__item {% if 'favorites' in current_url %}nav__item_active{% endif %}">
+					<a href="{% url 'favorites' %}" class="nav__link link">
+						Избранное
 					</a>
 				</li>
-				<li class="nav__item">
+				<li class="nav__item {% if 'cart' in current_url %}nav__item_active{% endif %}">
 					<a href="{% url 'cart' %}" class="nav__link link">
 						Список покупок
 					</a>
+
+					{% with count=request|get_count_cart %}
+					{% if not count %}
+					<span class="" id="counter">
+					{% else %}
 					<span class="badge badge_style_blue nav__badge" id="counter">
-						{{ request|get_count_cart }}
+						{{ count }}
+					{% endif %}
 					</span>
+					{% endwith %}
+
+
 				</li>
 			</ul>
 			<ul class="nav__items list">
-				<li class="nav__item">
+				<li class="nav__item {% if 'password_change' in current_url %}nav__item_active{% endif %}">
 					<a href="{% url 'password_change' %}" class="nav__link link">
 						Изменить пароль
 					</a>
@@ -65,5 +76,6 @@
 				</li>
 			</ul>
 		{% endif %}
+		{% endwith %}
 	</div>
 </nav>

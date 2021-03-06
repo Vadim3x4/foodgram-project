@@ -1,5 +1,6 @@
 from django.contrib.auth import get_user_model
 from django.db import models
+
 from recipe.models import Recipe
 
 User = get_user_model()
@@ -9,7 +10,7 @@ class FavoriteRecipeManager(models.Manager):
 
     @staticmethod
     def favorite_recipe(user, tags):
-        favorite = Favorites_recipe.objects.filter(
+        favorite = FavoritesRecipe.objects.filter(
             user=user
         ).all()
         recipes_id = favorite.values_list(
@@ -20,11 +21,11 @@ class FavoriteRecipeManager(models.Manager):
             tags
         ).filter(
             pk__in=recipes_id
-        )
+        ).order_by('-pub_date')
         return favorite_list
 
 
-class Favorites_recipe(models.Model):
+class FavoritesRecipe(models.Model):
     user = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
@@ -60,12 +61,19 @@ class Follow(models.Model):
     )
 
     class Meta:
-        unique_together = (
-            'user',
-            'author'
-        )
+        constraints = [
+            models.UniqueConstraint(
+                fields=['user', 'author'],
+                name='unique_subscriptions'
+            )
+        ]
+
         verbose_name = 'Подписчики'
         verbose_name_plural = 'Подписчики'
+
+    def clean(self):
+        if self.user == self.author:
+            raise ValidationError('Нельзя подписываться на самого себя')
 
 
 class Cart(models.Model):
@@ -81,6 +89,12 @@ class Cart(models.Model):
     )
 
     class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=['user', 'recipe'],
+                name='unique_cart'
+            )
+        ]
         verbose_name = 'Список покупок'
         verbose_name_plural = 'Список покупок'
 

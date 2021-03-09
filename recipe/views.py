@@ -149,7 +149,7 @@ def recipe_cart(request):
 
 
 @login_required
-def recipe_add(request, recipe_id=None):
+def recipe_add_edit(request, recipe_id=None):
     """
     Метод cоздания нового,
     и редактирования имеющегося рецепта.

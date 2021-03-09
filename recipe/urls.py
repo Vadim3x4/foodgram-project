@@ -48,12 +48,12 @@ urlpatterns = [
     ),
     path(
         'recipe_add/',
-        views.recipe_add,
+        views.recipe_add_edit,
         name='recipe_add'
     ),
     path(
         'recipe_edit/<int:recipe_id>',
-        views.recipe_add,
+        views.recipe_add_edit,
         name='recipe_edit'
     ),
     path(

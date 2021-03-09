@@ -38,16 +38,22 @@ class FavoriteView(LoginRequiredMixin, APIView):
             recipe=recipe
         )
         if favorite_obj:
-            return JsonResponse({'status': '201'})
-        return JsonResponse({"status": '302'})
+            return JsonResponse(
+                {'status': '201'}
+            )
+        return JsonResponse(
+            {"status": '302'}
+        )
 
     def delete(self, request, pk):
-        favorite_obj = get_object_or_404(
-            FavoritesRecipe,
+        del_like = FavoritesRecipe.objects.filter(
             user=request.user,
             recipe_id=pk
-        )
-        favorite_obj.delete()
+        ).delete()
+        if del_like is 0:
+            return JsonResponse(
+                {"status": '404'}
+            )
         return JsonResponse(
             {"status": '204'}
         )
@@ -78,12 +84,14 @@ class FollowView(LoginRequiredMixin, APIView):
         )
 
     def delete(self, request, pk):
-        subscribe = get_object_or_404(
-            Follow,
+        del_follow = Follow.objects.filter(
             user=request.user,
             author_id=pk
-        )
-        subscribe.delete()
+        ).delete()
+        if del_follow is 0:
+            return JsonResponse(
+                {"status": '404'}
+            )
         return JsonResponse(
             {"status": '204'}
         )
@@ -106,16 +114,22 @@ class PurchaseView(APIView):
             recipe=recipe
         )
         if cart_object:
-            return JsonResponse({'status': '201'})
-        return JsonResponse({"status": '302'})
+            return JsonResponse(
+                {'status': '201'}
+            )
+        return JsonResponse(
+            {"status": '302'}
+        )
 
     def delete(self, request, pk):
-        purchase = get_object_or_404(
-            Cart,
+        del_follow = Cart.objects.filter(
             user=request.user,
             recipe_id=pk
-        )
-        purchase.delete()
+        ).delete()
+        if del_follow is 0:
+            return JsonResponse(
+                {"status": '404'}
+            )
         return JsonResponse(
             {"status": '204'}
         )

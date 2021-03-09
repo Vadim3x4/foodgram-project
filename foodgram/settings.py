@@ -8,11 +8,7 @@ SECRET_KEY = 'gte%#ne*vt6(i&e=%zq53jf4fq%)d@mn9e2h-(7_=&2^3_ov@m'
 
 DEBUG = True
 
-ALLOWED_HOSTS = [
-    "localhost",
-    "127.0.0.1",
-    "testserver",
-    ]
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
@@ -47,14 +43,6 @@ MIDDLEWARE = [
 ROOT_URLCONF = 'foodgram.urls'
 
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
-}
-
-
 TEMPLATES_DIR = os.path.join(BASE_DIR, "templates")
 TEMPLATES = [
     {
@@ -78,12 +66,26 @@ WSGI_APPLICATION = 'foodgram.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
-}
+ 
+DATABASES = { 
+    'default': { 
+        'ENGINE': 'django.db.backends.sqlite3', 
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'), 
+    } 
+} 
+
+
+#Это на будущее  =)
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': os.environ.get('DB_NAME'),
+#         'USER': os.environ.get('POSTGRES_USER'),
+#         'PASSWORD': os.environ.get('POSTGRES_PASSWORD'),
+#         'HOST': os.environ.get('DB_HOST'),
+#         'PORT': os.environ.get('DB_PORT'),
+#     }
+# }
 
 
 # Password validation
@@ -130,6 +132,7 @@ SITE_ID = 1
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, "static")
+
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 

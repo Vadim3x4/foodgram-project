@@ -31,13 +31,9 @@
 					</a>
 
 					{% with count=request|get_count_cart %}
-					{% if not count %}
-					<span class="" id="counter">
-					{% else %}
 					<span class="badge badge_style_blue nav__badge" id="counter">
-						{{ count }}
-					{% endif %}
-					</span>
+					{% if count %}{{ count }}{% endif %}
+					</span>					
 					{% endwith %}
 
 

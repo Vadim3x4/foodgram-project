@@ -22,7 +22,7 @@ from .utils import (
 
 def index(request):
     """
-    Метод для вывода данных, 
+    Метод для вывода данных,
     главной страницы.
     """
 
@@ -46,7 +46,7 @@ def index(request):
 
 def recipe_card(request, recipe_id):
     """
-    Метод для вывода данных, 
+    Метод для вывода данных,
     персональной карточки рецепта.
     """
 
@@ -66,7 +66,7 @@ def recipe_card(request, recipe_id):
 @login_required
 def recipe_favorites(request):
     """
-    Метод для вывода данных, 
+    Метод для вывода данных,
     избранных рецептов.
     """
 
@@ -117,7 +117,7 @@ def recipe_author(request, author_id):
     name, surname = author.first_name, author.last_name
     if name or surname:
         username = username.get_full_name
-        
+
     return render(
         request,
         "recipe/author_recipes.html",
@@ -149,16 +149,39 @@ def recipe_cart(request):
 
 
 @login_required
-def recipe_add(request):
+def recipe_add(request, recipe_id=None):
     """
-    Метод cоздания нового рецепта.
+    Метод cоздания нового,
+    и редактирования имеющегося рецепта.
     """
 
-    form = RecipeForm(
-        request.POST or None,
-        files=request.FILES or None
+    recipe_ingredients = RecipeIngredient.objects.filter(
+        recipe=recipe_id
     )
-    context = {'form': form}
+    if recipe_id is None:
+        form = RecipeForm(
+            request.POST or None,
+            files=request.FILES or None
+        )
+        context = {
+            'form': form
+        }
+    else:
+        recipe = get_object_or_404(
+            Recipe,
+            id=recipe_id
+        )
+        if request.user != recipe.author: 
+            return redirect('index') 
+        form = RecipeForm(
+            request.POST or None,
+            files=request.FILES or None,
+            instance=recipe
+        )
+        context = {
+            'form': form,
+            'recipe': recipe
+        }
     if request.method != 'POST':
         return render(
             request,
@@ -167,6 +190,7 @@ def recipe_add(request):
         )
     else:
         if form.is_valid():
+            recipe_ingredients.delete()
             recipe = form.save(commit=False)
             recipe.author = request.user
             recipe.save()
@@ -184,59 +208,6 @@ def recipe_add(request):
                 )
                 recipe_ing.save()
             return redirect('index')
-    return render(
-        request,
-        'recipe/add_recipe.html',
-        {
-            'form': form
-        }
-    )
-
-
-@login_required
-def recipe_edit(request, recipe_id):
-    """
-    Метод для редактирования рецепта.
-    """
-
-    recipe = get_object_or_404(
-        Recipe,
-        id=recipe_id
-    )
-    author = recipe.author
-    if author != request.user:
-        return redirect('index')
-    else:
-        form = RecipeForm(
-            request.POST or None,
-            files=request.FILES or None,
-            instance=recipe
-        )
-        if request.method == 'POST':
-            if form.is_valid():
-                form.save()
-                ingredients = get_ingredients(request)
-                for title, quantity in ingredients.items():
-                    ingredient = get_object_or_404(
-                        Ingredient,
-                        title=title
-                    )
-                    recipe_ing = RecipeIngredient(
-                        recipe=recipe,
-                        ingredient=ingredient,
-                        quantity=quantity
-                    )
-                    recipe_ing.save()
-
-            return redirect('index')
-        return render(
-            request,
-            'recipe/add_recipe.html',
-            {
-                'form': form,
-                'recipe': recipe
-            }
-        )
 
 
 @login_required

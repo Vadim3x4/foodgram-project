@@ -1,19 +1,9 @@
 from django.db import models
 from django.contrib.auth import get_user_model
-
+from .managers import RecipeManager
 
 User = get_user_model()
 
-
-class RecipeManager(models.Manager):
-
-    @staticmethod
-    def tag_filter(tags):
-        if tags:
-            return Recipe.objects.filter(tags__slug__in=tags).order_by(
-                '-pub_date').distinct()
-        else:
-            return Recipe.objects.order_by('-pub_date').all()
 
 
 class Tag(models.Model):

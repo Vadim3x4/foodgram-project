@@ -2,27 +2,9 @@ from django.contrib.auth import get_user_model
 from django.db import models
 
 from recipe.models import Recipe
+from recipe.managers import FavoriteRecipeManager
 
 User = get_user_model()
-
-
-class FavoriteRecipeManager(models.Manager):
-
-    @staticmethod
-    def favorite_recipe(user, tags):
-        favorite = FavoritesRecipe.objects.filter(
-            user=user
-        ).all()
-        recipes_id = favorite.values_list(
-            'recipe',
-            flat=True
-        )
-        favorite_list = Recipe.objects.tag_filter(
-            tags
-        ).filter(
-            pk__in=recipes_id
-        ).order_by('-pub_date')
-        return favorite_list
 
 
 class FavoritesRecipe(models.Model):

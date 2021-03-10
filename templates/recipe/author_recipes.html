@@ -10,7 +10,7 @@
     {% csrf_token %}
     <div class="author-subscribe" data-author="{{ user.id }}">
         <p style="padding: 0 0 2em 0;">
-            {% if request.user.is_authenticated  and request.user != author_recipes %}
+            {% if request.user.is_authenticated  and request.user != author %}
             <button class="button button_style_light-blue button_size_subscribe" name="subscribe" data-out>
             Подписаться на автора
             </button>

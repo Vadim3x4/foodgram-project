@@ -13,7 +13,7 @@ services:
     env_file:
       - ./.env
   web:
-    build: .
+    image: vadim3x4/foodgram-project:latest
     restart: always
     expose:
       - 8000

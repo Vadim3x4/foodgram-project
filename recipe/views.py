@@ -125,7 +125,8 @@ def recipe_author(request, author_id):
             'page': page,
             'paginator': paginator,
             'title': username,
-            'tags': True
+            'tags': True,
+            'author': author
         }
     )
 

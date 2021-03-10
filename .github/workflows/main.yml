@@ -1,4 +1,4 @@
-name: Yamdb-app workflow
+name: Foodgram-app workflow
 on: [push]
 jobs:
   tests:
@@ -37,7 +37,7 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           push: true
-          tags: vadim3x4/yamdb_final:latest
+          tags: vadim3x4/foodgram-project:latest
   deploy:
    runs-on: ubuntu-latest
    needs: build_and_push_to_docker_hub
@@ -52,7 +52,7 @@ jobs:
        key: ${{ secrets.SSH_KEY }}
        passphrase: ${{ secrets.PASSPHRASE }}
        source: docker-compose.yaml, example_env, nginx, Dockerfile
-       target: yamdb_final
+       target: foodgram-project
    - name: executing remote ssh commands to deploy
      uses: appleboy/ssh-action@master
      with:
@@ -63,7 +63,7 @@ jobs:
        script: |
          cd yamdb_final
          sudo mv example_env .env
-         sudo docker pull ${{ secrets.DOCKER_LOGIN }}/yamdb_final:latest
+         sudo docker pull ${{ secrets.DOCKER_LOGIN }}/foodgram-project:latest
          sudo docker-compose up --force-recreate --no-deps -d web
          sudo docker image prune -f
          

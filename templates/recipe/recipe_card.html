@@ -18,7 +18,7 @@
                     {{recipe_card.title}}
                     </h1>
                     <div class="single-card__favorite">
-                        {% if request.user.is_authenticated and request.user != author %}
+                        {% if request.user.is_authenticated and request.user != recipe_card.author %}
                             {% if not recipe_card|is_favorite:request.user %}
                                 <button class="button button_style_none" name="favorites" data-out>
                                 <span class="icon-favorite icon-favorite_big">

@@ -59,7 +59,7 @@ jobs:
        key: ${{ secrets.SSH_KEY }}
        passphrase: ${{ secrets.PASSPHRASE }} # если ваш ssh-ключ защищен фразой-паролем
        script: |
-         cd yamdb_final
+         cd foodgram-project
          sudo mv example_env .env
          sudo docker pull ${{ secrets.DOCKER_LOGIN }}/foodgram-project:latest
          sudo docker-compose up --force-recreate --no-deps -d web

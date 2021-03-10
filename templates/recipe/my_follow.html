@@ -53,11 +53,11 @@
 				<div class="card-user__footer">
 					{% if request.user.is_authenticated and request.user != author %}
 						{% if author|is_subscribe:user %}
-							<form action="{% url 'my_follow' %}" target="_blank">
+							<form action="{% url 'index' %}" target="_blank">
 							<button class="button button_style_light-blue button_size_auto" name="subscribe">
 							Отписаться
 							</button>
-						
+							</form>
 						{% endif %}
 					{% endif %}
 				</div>

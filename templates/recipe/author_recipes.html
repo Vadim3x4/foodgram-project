@@ -9,6 +9,7 @@
 {% block content %}
     {% csrf_token %}
     <div class="author-subscribe" data-author="{{ author.id }}">
+        {% load user_filters %}
             {% if request.user.is_authenticated and request.user != author %}
                 {% if author|is_subscribe:user %}
                     <p style="padding: 0 0 2em 0;">

@@ -1,5 +1,5 @@
 # WEB сервис FOODGRAM
-![Build Status](https://github.com/Vadim3x4/yamdb_final/workflows/Foodgram-app%20workflow/badge.svg)
+![Build Status](https://github.com/Vadim3x4/foodgram-project/workflows/Foodgram-app%20workflow/badge.svg)
 
 #### Проверить сервис можно по адресу - http://http://178.154.195.50/
 

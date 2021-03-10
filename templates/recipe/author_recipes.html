@@ -8,15 +8,23 @@
 {% endblock %}
 {% block content %}
     {% csrf_token %}
-    <div class="author-subscribe" data-author="{{ user.id }}">
-        <p style="padding: 0 0 2em 0;">
-            {% if request.user.is_authenticated  and request.user != author %}
-            <button class="button button_style_light-blue button_size_subscribe" name="subscribe" data-out>
-            Подписаться на автора
-            </button>
+    <div class="author-subscribe" data-author="{{ author.id }}">
+            {% if request.user.is_authenticated and request.user != author %}
+                {% if author|is_subscribe:user %}
+                    <p style="padding: 0 0 2em 0;">
+                        <button class="button button_style_light-blue button_size_auto" name="subscribe">
+                            Отписаться от автора
+                        </button>
+                    </p>
+                {% else %}
+                    <p style="padding: 0 0 2em 0;">
+                        <button class="button button_style_light-blue button_size_auto"
+                                name="subscribe" data-out>Подписаться на автора
+                        </button>
+                    </p>
+                {% endif %}
             {% endif %}
-        </p>
-    </div>
+        </div>
     <div class="card-list">
         {% for recipe in page %}
             {% include 'recipe/recipe_item.html' %}

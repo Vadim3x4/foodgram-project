@@ -55,7 +55,7 @@ class Follow(models.Model):
         verbose_name_plural = 'Подписчики'
 
     def clean(self):
-        if self.user == self.author:
+        if self.author == self.user:
             raise ValidationError('Нельзя подписываться на самого себя')
 
 

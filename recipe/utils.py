@@ -4,7 +4,7 @@ from django.shortcuts import render
 from django.db.models import Sum
 
 from api.models import Cart
-from models import *
+
 
 def pagination(request, data, count_item):
     """

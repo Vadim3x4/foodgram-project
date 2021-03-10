@@ -75,7 +75,6 @@ DATABASES = {
 } 
 
 
-#Это на будущее  =)
 # DATABASES = {
 #     'default': {
 #         'ENGINE': 'django.db.backends.postgresql',

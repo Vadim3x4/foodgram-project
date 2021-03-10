@@ -155,9 +155,6 @@ def recipe_add_edit(request, recipe_id=None):
     и редактирования имеющегося рецепта.
     """
 
-    recipe_ingredients = RecipeIngredient.objects.filter(
-        recipe=recipe_id
-    )
     if recipe_id is None:
         form = RecipeForm(
             request.POST or None,
@@ -171,8 +168,8 @@ def recipe_add_edit(request, recipe_id=None):
             Recipe,
             id=recipe_id
         )
-        if request.user != recipe.author: 
-            return redirect('index') 
+        if request.user != recipe.author:
+            return redirect('index')
         form = RecipeForm(
             request.POST or None,
             files=request.FILES or None,
@@ -182,32 +179,37 @@ def recipe_add_edit(request, recipe_id=None):
             'form': form,
             'recipe': recipe
         }
+        
     if request.method != 'POST':
         return render(
             request,
             'recipe/add_recipe.html',
             context
         )
-    else:
-        if form.is_valid():
-            recipe_ingredients.delete()
-            recipe = form.save(commit=False)
-            recipe.author = request.user
-            recipe.save()
-            form.save_m2m()
-            ingredients = get_ingredients(request)
-            for title, quantity in ingredients.items():
-                ingredient = get_object_or_404(
-                    Ingredient,
-                    title=title
-                )
-                recipe_ing = RecipeIngredient(
-                    recipe=recipe,
-                    ingredient=ingredient,
-                    quantity=quantity
-                )
-                recipe_ing.save()
-            return redirect('index')
+
+    if form.is_valid():
+        recipe_ingredients = RecipeIngredient.objects.filter(
+            recipe=recipe_id
+        )
+        recipe_ingredients.delete()
+        recipe = form.save(commit=False)
+        recipe.author = request.user
+        recipe.save()
+        form.save_m2m()
+        ingredients = get_ingredients(request)
+        for title, quantity in ingredients.items():
+            ingredient = get_object_or_404(
+                Ingredient,
+                title=title
+            )
+            recipe_ing = RecipeIngredient(
+                recipe=recipe,
+                ingredient=ingredient,
+                quantity=quantity
+            )
+            recipe_ing.save()
+        return redirect('index')
+    return redirect('index')
 
 
 @login_required

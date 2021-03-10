@@ -3,9 +3,8 @@ from django.http import HttpResponse
 from django.shortcuts import render
 from django.db.models import Sum
 
-from .models import *
 from api.models import Cart
-
+from models import *
 
 def pagination(request, data, count_item):
     """

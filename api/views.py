@@ -1,11 +1,9 @@
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
-from rest_framework.response import Response
 from rest_framework.views import APIView
 from django.http import (
-    JsonResponse,
-    HttpResponse
+    JsonResponse
 )
 
 
@@ -50,7 +48,7 @@ class FavoriteView(LoginRequiredMixin, APIView):
             user=request.user,
             recipe_id=pk
         ).delete()
-        if del_like is 0:
+        if del_like is None or 0:
             return JsonResponse(
                 {"status": '404'}
             )
@@ -88,7 +86,7 @@ class FollowView(LoginRequiredMixin, APIView):
             user=request.user,
             author_id=pk
         ).delete()
-        if del_follow is 0:
+        if del_follow is None or 0:
             return JsonResponse(
                 {"status": '404'}
             )
@@ -126,7 +124,7 @@ class PurchaseView(APIView):
             user=request.user,
             recipe_id=pk
         ).delete()
-        if del_follow is 0:
+        if del_follow is None or 0:
             return JsonResponse(
                 {"status": '404'}
             )

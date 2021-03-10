@@ -38,7 +38,7 @@ class RecipeIngredientAdmin(admin.ModelAdmin):
 class RecipeAdmin(admin.ModelAdmin):
     inlines = (
         RecipeIngredientInline,
-        )
+    )
     list_display = (
         'title',
         'author',
@@ -61,8 +61,6 @@ class RecipeTagsAdmin(admin.ModelAdmin):
         'recipe',
         'tag'
     )
-    
-
 
 
 @admin.register(Tag)
@@ -71,4 +69,3 @@ class TagsAdmin(admin.ModelAdmin):
         'title',
         'color'
     )
-

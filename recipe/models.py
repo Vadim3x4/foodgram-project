@@ -5,11 +5,11 @@ from .managers import RecipeManager
 User = get_user_model()
 
 
-
 class Tag(models.Model):
     """
     Модель для тэгов фильтрации.
     """
+
     title = models.CharField(
         max_length=50
     )

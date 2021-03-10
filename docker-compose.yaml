@@ -3,6 +3,7 @@ version: '3.8'
 volumes:
   postgres_data:
   static_volume:
+  media_volume:
 
 services:
   db:
@@ -22,6 +23,7 @@ services:
       - ./.env
     volumes:
       - static_volume:/code/static
+      - media_volume:/code/media/
   nginx:
     image: nginx:1.19.6
     ports:
@@ -30,4 +32,5 @@ services:
       - web
     volumes:
       - static_volume:/code/static
+      - media_volume:/code/media/
       - ./nginx:/etc/nginx/conf.d

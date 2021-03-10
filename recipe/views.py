@@ -179,7 +179,7 @@ def recipe_add_edit(request, recipe_id=None):
             'form': form,
             'recipe': recipe
         }
-        
+
     if request.method != 'POST':
         return render(
             request,

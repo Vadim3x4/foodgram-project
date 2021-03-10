@@ -76,4 +76,3 @@ def change_tag_link(request, tag):
 def get_count_cart(request):
     if request.user.is_authenticated:
         return Cart.objects.filter(user=request.user).count()
-

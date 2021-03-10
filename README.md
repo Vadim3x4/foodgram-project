@@ -47,23 +47,20 @@ docker-compose exec web bash
 python manage.py makemigrations
 python manage.py migrate
 ```
-### 5. Запуск автотестов:
-```bash
-pytest
-```
-### 6. Инициализации стартовых данных:
+
+### 5. Инициализации стартовых данных:
 ```bash
 python manage.py loaddata fixtures.json
 ```
-### 7. Создание суперпользователя:
+### 6. Создание суперпользователя:
 ```bash
 python manage.py createsuperuser
 ```
-### 8. Выйти из контейнера:
+### 7. Выйти из контейнера:
 ```bash
 exit
 ```
-### 9. Остановить контейнер:
+### 8. Остановить контейнер:
 ```bash
 docker-compose down
 ```

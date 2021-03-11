@@ -1,7 +1,7 @@
 # WEB сервис FOODGRAM
-![Build Status](https://github.com/Vadim3x4/yamdb_final/workflows/Yamdb-app%20workflow/badge.svg)
+![Build Status](https://github.com/Vadim3x4/foodgram-project/workflows/Foodgram-app%20workflow/badge.svg)
 
-#### Проверить сервис можно по адресу - http://http://178.154.195.50/
+#### Проверить сервис можно по адресу - http://178.154.195.50/
 
 FOODGRAM это онлайн-сервис для публикации рецептов. В функционал сервиса входит: публикация рецептов, возможность подписываться на других пользователей, добавлять понравившиеся рецепты в список «Избранное». Также доступна функция скачивания списка продуктов, для выбранных рецептов.
 
@@ -47,23 +47,20 @@ docker-compose exec web bash
 python manage.py makemigrations
 python manage.py migrate
 ```
-### 5. Запуск автотестов:
-```bash
-pytest
-```
-### 6. Инициализации стартовых данных:
+
+### 5. Инициализации стартовых данных:
 ```bash
 python manage.py loaddata fixtures.json
 ```
-### 7. Создание суперпользователя:
+### 6. Создание суперпользователя:
 ```bash
 python manage.py createsuperuser
 ```
-### 8. Выйти из контейнера:
+### 7. Выйти из контейнера:
 ```bash
 exit
 ```
-### 9. Остановить контейнер:
+### 8. Остановить контейнер:
 ```bash
 docker-compose down
 ```

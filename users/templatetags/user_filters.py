@@ -78,7 +78,6 @@ def get_count_cart(request):
         return Cart.objects.filter(user=request.user).count()
 
 
-
 @register.filter
 def get_count_recipes(recipe):
     count_recipe = len(recipe) - 3

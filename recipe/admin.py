@@ -14,10 +14,10 @@ class RecipeIngredientInline(admin.TabularInline):
     model = RecipeIngredient
     extra = 1
 
+
 class RecipeTagInline(admin.TabularInline):
     model = RecipeTags
     extra = 1
-
 
 
 @admin.register(Ingredient)

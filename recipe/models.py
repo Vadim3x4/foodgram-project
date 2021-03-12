@@ -1,6 +1,9 @@
 from django.db import models
 from django.contrib.auth import get_user_model
+from django.core.validators import MinValueValidator
+
 from .managers import RecipeManager
+
 
 User = get_user_model()
 
@@ -61,7 +64,7 @@ class Recipe(models.Model):
 
     title = models.CharField(
         max_length=255,
-        unique=True,
+        unique=False,
         verbose_name='Название рецепта'
     )
     ingredients = models.ManyToManyField(
@@ -72,7 +75,8 @@ class Recipe(models.Model):
     )
     time = models.PositiveIntegerField(
         null=False,
-        verbose_name='Время приготовления'
+        verbose_name='Время приготовления',
+        validators=[MinValueValidator(1)]
     )
     text = models.TextField(
         null=False,
@@ -96,7 +100,6 @@ class Recipe(models.Model):
     )
     tags = models.ManyToManyField(
         Tag,
-        blank=True,
         through='RecipeTags',
         related_name='tags',
         verbose_name='Тэги'
@@ -161,7 +164,10 @@ class RecipeIngredient(models.Model):
 
     )
     quantity = models.PositiveIntegerField(
-        verbose_name='Колличество ингредиентов'
+        verbose_name='Колличество ингредиентов',
+        validators=[MinValueValidator(1)],
+        null=False,
+        blank=False
     )
 
     class Meta:

@@ -21,11 +21,12 @@
             <p class="card__text">
                 <span class="icon-time">
                 </span>
-                {{recipe.time}} мин
+                {{recipe.time}} мин.
             </p>
             <p class="card__text">
                 <span class="icon-user">
                 </span>
+                <style> a {text-decoration: none;} </style>
                 <a href="{% url 'recipe_author' recipe.author.id %}" style="color: black">
                     {{recipe.author}}
                 </a>
@@ -48,7 +49,7 @@
                 </button>
             {% endif %}
         {% endif %}
-        {% if request.user.is_authenticated and request.user != recipe.author %}
+        {% if request.user.is_authenticated %}
             {% if not recipe|is_favorite:request.user %}
                 <button class="button button_style_none" name="favorites" data-out>
                     <span class="icon-favorite">

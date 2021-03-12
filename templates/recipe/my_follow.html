@@ -39,8 +39,7 @@
 						{% endfor %}
 						<li class="card-user__item">
 							{% if author.recipe_author.all %}
-								<a href="{% url 'recipe_author' author.id %}" class="card-user__link link">
-									Все рецепты автора
+								<a href="{% url 'recipe_author' author.id %}" class="card-user__link link">{{ author.recipe_author.all|get_count_recipes }}</a>
 								</a>
 							{% else %}
 								<a href="{% url 'index' %}" class="card-user__link link">

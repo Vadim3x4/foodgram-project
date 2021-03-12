@@ -23,6 +23,13 @@
             </h1>
         {% endif %}
     </div>
+    {% for error in form.non_field_errors %}
+                        <div class='form__error'>
+                        <span class="form__error">
+                        {{ error }}
+                        </span>
+                        </div>
+                        {% endfor %}
     <div class="form-container">
         <form class="form" method="post" enctype="multipart/form-data">
             {% csrf_token %}

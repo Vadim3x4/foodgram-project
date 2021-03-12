@@ -146,10 +146,9 @@ def ingredients(request):
     ).lower()
 
     ingredients = Ingredient.objects.filter(
-        title__contains=query
+        title__startswith=query
     ).values(
         "title",
         "dimension"
     )
-
     return JsonResponse(list(ingredients), safe=False)

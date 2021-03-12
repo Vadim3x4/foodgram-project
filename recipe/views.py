@@ -210,7 +210,11 @@ def recipe_add_edit(request, recipe_id=None):
             )
             recipe_ing.save()
         return redirect('index')
-    return redirect('index')
+    return render(
+        request,
+        'recipe/add_recipe.html',
+        context
+    )
 
 
 @login_required

@@ -76,3 +76,19 @@ def change_tag_link(request, tag):
 def get_count_cart(request):
     if request.user.is_authenticated:
         return Cart.objects.filter(user=request.user).count()
+
+
+
+@register.filter
+def get_count_recipes(recipe):
+    count_recipe = len(recipe) - 3
+    if count_recipe < 1:
+        return False
+
+    if count_recipe % 10 == 1 and count_recipe % 100 != 11:
+        end = 'рецепт'
+    elif 2 <= count_recipe % 10 <= 4 and (count_recipe % 100 < 10 or count_recipe % 100 >= 20):
+        end = 'рецепта'
+    end = 'рецептов'
+
+    return f'Еще {count_recipe} {end}...'

@@ -14,6 +14,11 @@ class RecipeIngredientInline(admin.TabularInline):
     model = RecipeIngredient
     extra = 1
 
+class RecipeTagInline(admin.TabularInline):
+    model = RecipeTags
+    extra = 1
+
+
 
 @admin.register(Ingredient)
 class IngredientAdmin(admin.ModelAdmin):
@@ -45,6 +50,7 @@ class RecipeIngredientAdmin(admin.ModelAdmin):
 class RecipeAdmin(admin.ModelAdmin):
     inlines = (
         RecipeIngredientInline,
+        RecipeTagInline
     )
     list_display = (
         'title',

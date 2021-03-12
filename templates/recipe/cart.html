@@ -27,9 +27,11 @@
 			{% endfor %}
 		</ul>
 		<a href="{% url 'get_cart' %}">
+			{% if cart_list%}
 			<button class="button button_style_blue">
 			Скачать список
 			</button>
+			{% endif %}
 		</a>
 	</div>
 {% endblock %}

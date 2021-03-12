@@ -25,18 +25,12 @@
 						Избранное
 					</a>
 				</li>
+
 				<li class="nav__item {% if 'cart' in current_url %}nav__item_active{% endif %}">
 					<a href="{% url 'cart' %}" class="nav__link link">
 						Список покупок
 					</a>
-
-					{% with count=request|get_count_cart %}
-					<span class="badge badge_style_blue nav__badge" id="counter">
-					{% if count %}{{ count }}{% endif %}
-					</span>					
-					{% endwith %}
-
-
+					<span class="badge badge_style_blue nav__badge" id="counter">{% if get_count_cart %}{{ get_count_cart }}{% endif %}</span>
 				</li>
 			</ul>
 			<ul class="nav__items list">
@@ -57,6 +51,12 @@
 					<a href="/" class="nav__link link">
 						Рецепты
 					</a>
+				</li>
+				<li class="nav__item">
+					<a href="{% url 'login' %}" class="nav__link link">
+						Список покупок
+					</a>
+					</span>					
 				</li>
 			</ul>
 			<ul class="nav__items list">

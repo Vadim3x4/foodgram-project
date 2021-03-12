@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django.db.models import Count
 
 from .models import (
     Ingredient,
@@ -60,10 +61,11 @@ class RecipeAdmin(admin.ModelAdmin):
         'tags'
     )
 
-
     def get_queryset(self, request):
         queryset = super().get_queryset(request)
-        return queryset.annotate(added_favorite=Count('favorites'))
+        return queryset.annotate(
+            added_favorite=Count('favorites')
+        )
 
     def get_favorite(self, obj):
         return obj.added_favorite

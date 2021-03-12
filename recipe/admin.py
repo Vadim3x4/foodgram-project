@@ -61,6 +61,16 @@ class RecipeAdmin(admin.ModelAdmin):
     )
 
 
+    def get_queryset(self, request):
+        queryset = super().get_queryset(request)
+        return queryset.annotate(added_favorite=Count('favorites'))
+
+    def get_favorite(self, obj):
+        return obj.added_favorite
+
+    get_favorite.short_description = 'добавлен в избранное, раз'
+
+
 @admin.register(RecipeTags)
 class RecipeTagsAdmin(admin.ModelAdmin):
     list_display = (

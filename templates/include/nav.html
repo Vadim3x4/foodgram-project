@@ -30,7 +30,7 @@
 					<a href="{% url 'cart' %}" class="nav__link link">
 						Список покупок
 					</a>
-					<span class="badge badge_style_blue nav__badge" id="counter">{% if get_count_cart %}{{ get_count_cart }}{% endif %}</span>
+					<span class="badge badge_style_blue nav__badge" id="counter">{% if request|get_count_cart %}{{ request|get_count_cart }}{% endif %}</span>
 				</li>
 			</ul>
 			<ul class="nav__items list">
